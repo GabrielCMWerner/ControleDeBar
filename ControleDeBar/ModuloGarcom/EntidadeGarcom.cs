@@ -23,5 +23,17 @@ namespace ControleDeBar.ModuloGarcom
             this.Nome = ProdutoAtualizado.Nome;
             
         }
+
+        public override ArrayList Validar()
+        {
+            ArrayList erros = new ArrayList();
+
+            if (string.IsNullOrEmpty(Nome.Trim()))
+            {
+                erros.Add("O campo \"Nome\" é obrigatório");
+            }
+
+            return erros;
+        }
     }
 }

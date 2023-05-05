@@ -55,6 +55,13 @@ namespace ControleDeBar.Compartilhado
 
             EntidadeBase registro = ObterRegistro();
 
+            if (TemErrosDeValidacao(registro))
+            {
+                InserirNovoRegistro(); //chamada recursiva
+
+                return;
+            }
+
             repositorioBase.Inserir(registro);
 
             MostrarMensagem("Registro inserido com sucesso!", ConsoleColor.Green);
@@ -86,6 +93,13 @@ namespace ControleDeBar.Compartilhado
             EntidadeBase registro = EncontrarRegistro("Digite o id do registro: ");
 
             EntidadeBase registroAtualizado = ObterRegistro();
+
+            if (TemErrosDeValidacao(registroAtualizado))
+            {
+                EditarRegistro();
+
+                return;
+            }
 
             repositorioBase.Editar(registro, registroAtualizado);
 
@@ -138,6 +152,29 @@ namespace ControleDeBar.Compartilhado
             return registroSelecionado;
         }
 
+        protected bool TemErrosDeValidacao(EntidadeBase registro)
+        {
+            bool temErros = false;
+
+            ArrayList erros = registro.Validar();
+
+            if (erros.Count > 0)
+            {
+                temErros = true;
+                Console.ForegroundColor = ConsoleColor.Red;
+
+                foreach (string erro in erros)
+                {
+                    Console.WriteLine(erro);
+                }
+
+                Console.ResetColor();
+
+                Console.ReadLine();
+            }
+
+            return temErros;
+        }
 
         protected abstract EntidadeBase ObterRegistro();
 

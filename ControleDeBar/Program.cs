@@ -13,21 +13,19 @@ namespace ControleDeBar
 
         static void Main(string[] args)
         {
-            Conta conta = new Conta();
-            Garcom garcom = new Garcom();
-            Mesa mesa = new Mesa();
-            Produto produto = new Produto();
 
-
-            RepositorioConta repositorioConta = new RepositorioConta(new ArrayList());
-            RepositorioGarcom repositorioGarcom = new RepositorioGarcom(new ArrayList());
             RepositorioMesa repositorioMesa = new RepositorioMesa(new ArrayList());
-            RepositorioProduto repositorioProduto = new RepositorioProduto(new ArrayList());
+            RepositorioProduto repoositorioProduto = new RepositorioProduto(new ArrayList());
+            RepositorioGarcom repositorioGarcom = new RepositorioGarcom(new ArrayList());
+            RepositorioConta repositorioConta = new RepositorioConta(new ArrayList());
 
-            TelaConta telaConta = new TelaConta(repositorioConta);
-            TelaGarcom telaGarcom = new TelaGarcom(repositorioGarcom);
+            PopularAplicacao(repositorioMesa, repoositorioProduto, repositorioGarcom);
+
             TelaMesa telaMesa = new TelaMesa(repositorioMesa);
-            TelaProduto telaProduto = new TelaProduto(repositorioProduto);
+            TelaProduto telaProduto = new TelaProduto(repoositorioProduto);
+            TelaGarcom telaGarcom = new TelaGarcom(repositorioGarcom);
+
+            TelaConta telaConta = new TelaConta(repositorioConta, telaMesa, telaGarcom, telaProduto);
 
 
             TelaPrincipal principal = new TelaPrincipal();
@@ -129,6 +127,31 @@ namespace ControleDeBar
                     }
                 }
             }
+        }
+
+        private static void PopularAplicacao(RepositorioMesa repositorioMesa, RepositorioProduto repoositorioProduto, RepositorioGarcom repositorioGarcom)
+        {
+            Produto produto01 = new Produto("Cerveja", 12);
+            Produto produto03 = new Produto("Água", 2);
+            Produto produto02 = new Produto("Pinga", 15);
+            Produto produto04 = new Produto("Refri", 10);
+
+            Garcom garcom01 = new Garcom("Garçom1");
+            Garcom garcom02 = new Garcom("Garçom2");
+
+            Mesa mesa01 = new Mesa("01");
+            Mesa mesa02 = new Mesa("02");
+
+            repoositorioProduto.Inserir(produto01);
+            repoositorioProduto.Inserir(produto02);
+            repoositorioProduto.Inserir(produto03);
+            repoositorioProduto.Inserir(produto04);
+
+            repositorioMesa.Inserir(mesa01);
+            repositorioMesa.Inserir(mesa02);
+
+            repositorioGarcom.Inserir(garcom01);
+            repositorioGarcom.Inserir(garcom02);
         }
     }
 }

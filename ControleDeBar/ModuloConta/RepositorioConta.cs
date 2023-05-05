@@ -10,9 +10,30 @@ namespace ControleDeBar.ModuloConta
             this.listaRegistros = listaConta;
         }
 
-        public override Conta SelecionarPorId(int id)
+        public ArrayList SelecionarContasEmAberto()
         {
-            return (Conta)base.SelecionarPorId(id);
+            ArrayList contasEmAberto = new ArrayList();
+
+            foreach (Conta conta in listaRegistros)
+            {
+                if (conta.EstaAberta)
+                    contasEmAberto.Add(conta);
+            }
+
+            return contasEmAberto;
+        }
+
+        public ArrayList SelecionarContasFechadas(DateTime data)
+        {
+            ArrayList contasEmAberto = new ArrayList();
+
+            foreach (Conta conta in listaRegistros)
+            {
+                if (conta.EstaAberta == false && conta.Data.Date == data.Date)
+                    contasEmAberto.Add(conta);
+            }
+
+            return contasEmAberto;
         }
     }
 

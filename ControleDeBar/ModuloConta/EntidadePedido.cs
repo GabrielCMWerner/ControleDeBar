@@ -4,31 +4,25 @@ using System.Collections;
 
 namespace ControleDeBar.ModuloConta
 {
-    public class Pedido : EntidadeBase
+    public class FaturamentoDiario
     {
-        public Produto Produto;
-        public int Quantidade;
-        public decimal ValorTotal;
+        private ArrayList contasFechadas;
 
-
-        public Pedido(Produto produto, int quantidade, decimal valorTotal)
+        public FaturamentoDiario(ArrayList contas)
         {
-            this.Produto = produto;
-            this.Quantidade = quantidade;
-
-            valorTotal = produto.Preco * quantidade;
-
-            this.ValorTotal = valorTotal;
+            this.contasFechadas = contas;
         }
 
-        public override void AtualizarInformacoes(EntidadeBase registroAtualizado)
+        public decimal CalcularTotal()
         {
-            Pedido pedidoAtualizado = (Pedido)registroAtualizado;
+            decimal total = 0;
 
-            this.Produto = pedidoAtualizado.Produto;
-            this.Quantidade = pedidoAtualizado.Quantidade;
-            this.ValorTotal = pedidoAtualizado.ValorTotal;
+            foreach (Conta conta in contasFechadas)
+            {
+                total += conta.CalcularValorTotal();
+            }
 
+            return total;
         }
     }
 }

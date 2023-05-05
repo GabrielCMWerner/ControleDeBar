@@ -7,25 +7,39 @@ namespace ControleDeBar.ModuloMesa
     public class Mesa : EntidadeBase
     {
         public string Numero;
-        public bool Status;
+        public bool Ocupada;
 
-        public Mesa()
+        public Mesa(string numeroMesa)
         {
-        }
-
-        public Mesa(string numero, bool status)
-        {
-            this.Numero = numero;
-            this.Status = status;
+            Numero = numeroMesa;
         }
 
         public override void AtualizarInformacoes(EntidadeBase registroAtualizado)
         {
-            Mesa MesaAtualizada = (Mesa)registroAtualizado;
+            Mesa mesaAtualizada = (Mesa)registroAtualizado;
 
-            this.Numero = MesaAtualizada.Numero;
-            this.Status = MesaAtualizada.Status;
+            this.Numero = mesaAtualizada.Numero;
+        }
 
+        public override ArrayList Validar()
+        {
+            ArrayList erros = new ArrayList();
+
+            if (string.IsNullOrEmpty(Numero.Trim()))
+            {
+                erros.Add("O campo \"Número da Mesa\" é obrigatorio");
+            }
+            return erros;
+        }
+
+        public void Desocupar()
+        {
+            Ocupada = false;
+        }
+
+        public void Ocupar()
+        {
+            Ocupada = true;
         }
     }
 }

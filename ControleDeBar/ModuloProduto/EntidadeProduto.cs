@@ -26,5 +26,21 @@ namespace ControleDeBar.ModuloProduto
             this.Preco = ProdutoAtualizado.Preco;
             
         }
+
+        public override ArrayList Validar()
+        {
+            ArrayList erros = new ArrayList();
+
+            if (string.IsNullOrEmpty(Nome.Trim()))
+            {
+                erros.Add("O campo \"Nome\" é obrigatorio");
+            }
+            if (Preco == 0)
+            {
+                erros.Add("O campo \"Preço\" é obrigatorio");
+            }
+
+            return erros;
+        }
     }
 }

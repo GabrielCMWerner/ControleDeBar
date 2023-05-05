@@ -8,31 +8,79 @@ namespace ControleDeBar.ModuloConta
 {
     public class Conta : EntidadeBase
     {
-        public decimal ValorTotal;
         public Mesa Mesa;
         public Garcom Garcom;
         public ArrayList Pedidos;
 
-        public Conta()
-        {
-        }
+        public bool EstaAberta;
 
-        public Conta(Mesa mesa, Garcom garcom, decimal valorTotal, ArrayList pedidos)
+        public DateTime Data;
+
+        public Conta(Mesa m, Garcom g, DateTime dataAbertura)
         {
-            this.Mesa = mesa;
-            this.Garcom = garcom;
-            this.ValorTotal = valorTotal;
-            this.Pedidos = pedidos;
+            Mesa = m;
+            Garcom = g;
+            Pedidos = new ArrayList();
+            Data = dataAbertura;
+
+            Abrir();
         }
 
         public override void AtualizarInformacoes(EntidadeBase registroAtualizado)
         {
             Conta contaAtualizada = (Conta)registroAtualizado;
 
-            this.Mesa = contaAtualizada.Mesa;
-            this.Garcom = contaAtualizada.Garcom;
-            this.ValorTotal = contaAtualizada.ValorTotal;
-            this.Pedidos = contaAtualizada.Pedidos;
+            Garcom = contaAtualizada.Garcom;
+            Mesa = contaAtualizada.Mesa;
+        }
+
+        public void RegistrarPedido(Produto produto, int quantidadeEscolhida)
+        {
+            Pedido novoPedido = new Pedido(produto, quantidadeEscolhida);
+
+            Pedidos.Add(novoPedido);
+        }
+
+        public decimal CalcularValorTotal()
+        {
+            decimal total = 0;
+
+            foreach (Pedido pedido in Pedidos)
+            {
+                decimal totalPedido = pedido.CalcularTotalParcial();
+
+                total += totalPedido;
+            }
+
+            return total;
+        }
+        private void Abrir()
+        {
+            EstaAberta = true;
+            Mesa.Ocupar();
+        }
+
+        public void Fechar()
+        {
+            EstaAberta = false;
+            Mesa.Desocupar();
+        }
+
+        public override ArrayList Validar()
+        {
+            ArrayList erros = new ArrayList();
+
+            if (Garcom == null)
+            {
+                erros.Add("O campo \"Garçom\" é obrigatorio");
+            }
+
+            if (Mesa == null)
+            {
+                erros.Add("O campo \"Mesa\" é obrigatorio");
+            }
+
+            return erros;
         }
     }
 }
